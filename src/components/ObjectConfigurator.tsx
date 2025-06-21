@@ -1,6 +1,6 @@
 // src/components/ObjectConfigurator.tsx
 import React, { useState } from 'react';
-import type { ObjectFieldConfig, FormConfig, FieldType, ArrayElementConfig, ObjectConfig, ArrayConfig } from '../types';
+import type { ObjectFieldConfig, ObjectConfig, ArrayConfig } from '../types';
 import ArrayConfigurator from './ArrayConfigurator';
 import FormFieldModal from './FormFieldModal';
 
