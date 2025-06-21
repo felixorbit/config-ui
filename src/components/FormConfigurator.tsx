@@ -41,6 +41,7 @@ const FormConfigurator: React.FC<FormConfiguratorProps> = ({ onConfigChange }) =
   return (
     <div className="form-configurator">
       <h2>1. 配置表单</h2>
+      
       <div className="config-actions">
         <button onClick={() => setShowImportModal(true)}>导入配置</button>
         <button onClick={() => setShowExportModal(true)}>导出配置</button>

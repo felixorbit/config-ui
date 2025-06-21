@@ -1,5 +1,5 @@
 // src/components/ArrayConfigurator.tsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import type { ArrayElementConfig, FieldType, FormConfig, ObjectFieldConfig, ArrayConfig, ObjectConfig } from '../types';
 import ObjectConfigurator from './ObjectConfigurator';
 // Recursive import: ArrayConfigurator imports itself for nested arrays.
@@ -22,6 +22,10 @@ const ArrayConfigurator: React.FC<ArrayConfiguratorProps> = ({ config, onElement
   const [nestedArrayConfig, setNestedArrayConfig] = useState<ArrayConfig | undefined>(
     config.elementConfig.elementType === 'array' ? config.elementConfig.nestedArrayConfig : undefined
   );
+
+  useEffect(() => {
+    setElementType(config.elementConfig.elementType);
+  }, [config]);
 
   const handleElementTypeChange = (newType: FieldType) => {
     setElementType(newType);

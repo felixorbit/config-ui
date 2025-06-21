@@ -1,5 +1,5 @@
 // src/components/ObjectConfigurator.tsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import type { ObjectFieldConfig, ObjectConfig, ArrayConfig } from '../types';
 import ArrayConfigurator from './ArrayConfigurator';
 import FormFieldModal from './FormFieldModal';
@@ -15,6 +15,10 @@ const ObjectConfigurator: React.FC<ObjectConfiguratorProps> = ({ config, onField
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingField, setEditingField] = useState<Partial<ObjectFieldConfig> | null>(null); // Partial for new field
   const [editingFieldIndex, setEditingFieldIndex] = useState<number | null>(null);
+
+  useEffect(() => {
+    setFields(config.fields);
+  }, [config]);
 
   // 新增字段打开模态框
   const handleOpenModalForNew = () => {

@@ -52,7 +52,7 @@ const FormFieldModal: React.FC<FormFieldModalProps> = ({ field, onClose, onSave,
     setKeyError('');
 
     const newFieldData: ObjectFieldConfig = {
-      id: field.id || `${path}-field-${Date.now()}`,
+      id: field.id || `${path}-field-${keyName.trim()}`,
       fieldName: fieldName.trim() || keyName.trim(), // 如果字段名为空，使用 key 作为字段名
       keyName: keyName.trim(),
       type,
