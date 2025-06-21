@@ -1,5 +1,5 @@
 // src/components/FormConfigurator.tsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import type { FormConfig, InitialFormType } from '../types';
 import ObjectConfigurator from './ObjectConfigurator';
 import ArrayConfigurator from './ArrayConfigurator';
@@ -38,6 +38,40 @@ const FormConfigurator: React.FC<FormConfiguratorProps> = ({ onConfigChange }) =
     }
   };
 
+  const handleShare = () => {
+    if (config) {
+      try {
+        const configString = JSON.stringify(config);
+        const encodedConfig = btoa(encodeURIComponent(configString));
+        const url = `${window.location.origin}${window.location.pathname}?config=${encodedConfig}`;
+        navigator.clipboard.writeText(url).then(() => {
+          alert('分享链接已复制到剪贴板！');
+        });
+      } catch (error) {
+        console.error('创建分享链接失败:', error);
+        alert('创建分享链接失败。');
+      }
+    }
+  };
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const configData = params.get('config');
+    if (configData) {
+      try {
+        const decodedConfig = decodeURIComponent(atob(configData));
+        const parsedConfig = JSON.parse(decodedConfig);
+        if (parsedConfig && typeof parsedConfig === 'object' && 'type' in parsedConfig) {
+          setConfig(parsedConfig as FormConfig);
+          setInitialType(parsedConfig.type);
+          onConfigChange(parsedConfig as FormConfig);
+        }
+      } catch (error) {
+        console.error('解析分享链接中的配置失败:', error);
+      }
+    }
+  }, []);
+
   return (
     <div className="form-configurator">
       <h2>1. 配置表单</h2>
@@ -45,6 +79,7 @@ const FormConfigurator: React.FC<FormConfiguratorProps> = ({ onConfigChange }) =
       <div className="config-actions">
         <button onClick={() => setShowImportModal(true)}>导入配置</button>
         <button onClick={() => setShowExportModal(true)}>导出配置</button>
+        <button onClick={handleShare}>分享</button>
       </div>
 
       {!initialType && (
