@@ -1,7 +1,7 @@
 // src/App.tsx
 import { useState } from 'react';
-import FormConfigurator from './components/FormConfigurator';
-import FormDataFiller from './components/FormDataFiller';
+import { FormConfigurator } from './components/FormConfigurator';
+import { FormDataFiller, initializeDataFromConfig } from './components/FormDataFiller';
 import JsonDisplay from './components/JsonDisplay';
 import type { FormConfig, FormData } from './types';
 import './App.css'; // 主应用样式
@@ -12,8 +12,9 @@ function App() {
 
   const handleConfigChange = (config: FormConfig) => {
     setFormConfig(config);
-    // 当配置改变时，重置已填写的数据
-    setFormData(null); 
+    // 根据新配置初始化表单数据
+    const initialData = initializeDataFromConfig(config);
+    setFormData(initialData);
   };
 
   const handleDataChange = (data: FormData) => {
@@ -30,7 +31,7 @@ function App() {
           <FormConfigurator onConfigChange={handleConfigChange} />
         </section>
         <section className="filler-section">
-          <FormDataFiller config={formConfig} onDataChange={handleDataChange} />
+          <FormDataFiller config={formConfig} formData={formData} onDataChange={handleDataChange} />
         </section>
         <section className="display-section">
           <JsonDisplay data={formData} />

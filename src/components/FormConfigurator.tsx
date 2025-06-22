@@ -38,6 +38,7 @@ const FormConfigurator: React.FC<FormConfiguratorProps> = ({ onConfigChange }) =
     }
   };
 
+  // 分享链接
   const handleShare = () => {
     if (config) {
       try {
@@ -145,4 +146,4 @@ const FormConfigurator: React.FC<FormConfiguratorProps> = ({ onConfigChange }) =
   );
 };
 
-export default FormConfigurator;
+export { FormConfigurator };
