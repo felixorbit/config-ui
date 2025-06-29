@@ -141,7 +141,7 @@ const FormDataFiller: React.FC<FormDataFillerProps> = ({ config, formData, onDat
   };
 
   // 渲染数组元素
-  const renderArrayElement = (elementConfig: ArrayElementConfig, itemData: any, itemPath: string[], index: number) => {
+  const renderArrayElement = (elementConfig: ArrayElementConfig, itemData: any, itemPath: string[]) => {
     // Note: itemData is the actual data for the current array item.
     // itemPath is the path to this specific item in the overall formData.
     switch (elementConfig.elementType) {
@@ -176,7 +176,7 @@ const FormDataFiller: React.FC<FormDataFillerProps> = ({ config, formData, onDat
       <div className="array-filler-container">
         {arrayData.map((item: any, index: number) => (
           <div key={index} className="array-item-filler">
-            {renderArrayElement(arrayConfig.elementConfig, item, currentPath.concat(index.toString()), index)}
+            {renderArrayElement(arrayConfig.elementConfig, item, currentPath.concat(index.toString()))}
             <button onClick={() => removeArrayItem(currentPath, index)}>删除项</button>
           </div>
         ))}
