@@ -13,39 +13,39 @@ interface FormFieldModalProps {
 }
 
 const FormFieldModal: React.FC<FormFieldModalProps> = ({ field, onClose, onSave, existingKeys, path }) => {
-  const [fieldName, setFieldName] = useState(field.fieldName || '');    // 字段名
-  const [keyName, setKeyName] = useState(field.keyName || '');          // Key
+  const [fieldName, setFieldName] = useState(field.name || '');    // 字段名
+  const [keyName, setKeyName] = useState(field.key || '');          // Key
   const [type, setType] = useState<FieldType>(field.type || 'string');  // 字段类型
   const [remark, setRemark] = useState(field.remark || '');             // 备注
   const [keyError, setKeyError] = useState('');
 
   const [nestedObjectConfig, setNestedObjectConfig] = useState<ObjectConfig | undefined>(
-    field.type === 'object' ? field.nestedObjectConfig : undefined
+    field.type === 'object' ? field.nestedObject : undefined
   );
   const [nestedArrayConfig, setNestedArrayConfig] = useState<ArrayConfig | undefined>(
-    field.type === 'array' ? field.nestedArrayConfig : undefined
+    field.type === 'array' ? field.nestedArray : undefined
   );
 
   useEffect(() => {
     // Initialize nested configs if type changes or on initial load for an existing complex field
     if (type === 'object' && !nestedObjectConfig) {
-      setNestedObjectConfig(field.nestedObjectConfig || { type: 'object', fields: [] });
+      setNestedObjectConfig(field.nestedObject || { type: 'object', fields: [] });
       setNestedArrayConfig(undefined);
     } else if (type === 'array' && !nestedArrayConfig) {
-      setNestedArrayConfig(field.nestedArrayConfig || { type: 'array', elementConfig: { elementType: 'string' } });
+      setNestedArrayConfig(field.nestedArray || { type: 'array', element: { type: 'string' } });
       setNestedObjectConfig(undefined);
     } else if (type !== 'object' && type !== 'array'){
       setNestedObjectConfig(undefined);
       setNestedArrayConfig(undefined);
     }
-  }, [type, field.nestedObjectConfig, field.nestedArrayConfig, nestedObjectConfig, nestedArrayConfig]);
+  }, [type, field.nestedObject, field.nestedArray, nestedObjectConfig, nestedArrayConfig]);
 
   const handleSave = () => {
     if (!keyName.trim()) {
       setKeyError('Key 不能为空');
       return;
     }
-    if (existingKeys.includes(keyName.trim()) && keyName.trim() !== field.keyName) {
+    if (existingKeys.includes(keyName.trim()) && keyName.trim() !== field.key) {
       setKeyError('Key 已存在，请使用其他 Key');
       return;
     }
@@ -53,12 +53,12 @@ const FormFieldModal: React.FC<FormFieldModalProps> = ({ field, onClose, onSave,
 
     const newFieldData: ObjectFieldConfig = {
       id: field.id || `${path}-field-${keyName.trim()}`,
-      fieldName: fieldName.trim() || keyName.trim(), // 如果字段名为空，使用 key 作为字段名
-      keyName: keyName.trim(),
+      name: fieldName.trim() || keyName.trim(), // 如果字段名为空，使用 key 作为字段名
+      key: keyName.trim(),
       type,
       remark: remark.trim(),
-      nestedObjectConfig: type === 'object' ? nestedObjectConfig : undefined,
-      nestedArrayConfig: type === 'array' ? nestedArrayConfig : undefined,
+      nestedObject: type === 'object' ? nestedObjectConfig : undefined,
+      nestedArray: type === 'array' ? nestedArrayConfig : undefined,
     };
     onSave(newFieldData);
   };
@@ -69,7 +69,7 @@ const FormFieldModal: React.FC<FormFieldModalProps> = ({ field, onClose, onSave,
       setNestedObjectConfig(current => current || { type: 'object', fields: [] });
       setNestedArrayConfig(undefined);
     } else if (newType === 'array') {
-      setNestedArrayConfig(current => current || { type: 'array', elementConfig: { elementType: 'string' } });
+      setNestedArrayConfig(current => current || { type: 'array', element: { type: 'string' } });
       setNestedObjectConfig(undefined);
     } else {
       setNestedObjectConfig(undefined);
@@ -85,7 +85,7 @@ const FormFieldModal: React.FC<FormFieldModalProps> = ({ field, onClose, onSave,
 
   const handleNestedArrayConfigChange = (updatedElementConfig: ArrayElementConfig) => {
     if (type === 'array') {
-      setNestedArrayConfig({ type: 'array', elementConfig: updatedElementConfig });
+      setNestedArrayConfig({ type: 'array', element: updatedElementConfig });
     }
   };
 
@@ -132,7 +132,7 @@ const FormFieldModal: React.FC<FormFieldModalProps> = ({ field, onClose, onSave,
             <h4>配置嵌套数组元素:</h4>
             <ArrayConfigurator 
               config={nestedArrayConfig} 
-              onElementConfigChange={handleNestedArrayConfigChange} 
+              onElementChange={handleNestedArrayConfigChange} 
               path={`${path}.${keyName || 'newArrayField'}`}
             />
           </div>

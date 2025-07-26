@@ -10,15 +10,16 @@ import ExportConfigModal from './ExportConfigModal';
 import ImportConfigModal from './ImportConfigModal';
 
 interface FormConfiguratorProps {
+  config: FormConfig | null;
   onConfigChange: (config: FormConfig) => void; // 配置变更回调
 }
 
-const FormConfigurator: React.FC<FormConfiguratorProps> = ({ onConfigChange }) => {
+const FormConfigurator: React.FC<FormConfiguratorProps> = ({ config, onConfigChange }) => {
   const [initialType, setInitialType] = useState<InitialFormType | null>(null);
-  const [config, setConfig] = useState<FormConfig | null>(null);
   const [showExportModal, setShowExportModal] = useState(false);
   const [showImportModal, setShowImportModal] = useState(false);
 
+  // 初始类型选择
   const handleInitialTypeSelect = (type: InitialFormType) => {
     setInitialType(type);
     if (type === 'object') {
@@ -26,14 +27,12 @@ const FormConfigurator: React.FC<FormConfiguratorProps> = ({ onConfigChange }) =
         type: 'object', 
         fields: [] 
       };
-      setConfig(newConfig);
       onConfigChange(newConfig);
     } else if (type === 'array') {
       const newConfig: FormConfig = { 
         type: 'array', 
-        elementConfig: { elementType: 'string' } // 默认数组元素类型为 string
+        element: { type: 'string' } // 默认数组元素类型为 string
       };
-      setConfig(newConfig);
       onConfigChange(newConfig);
     }
   };
@@ -63,7 +62,6 @@ const FormConfigurator: React.FC<FormConfiguratorProps> = ({ onConfigChange }) =
         const decodedConfig = decodeURIComponent(atob(configData));
         const parsedConfig = JSON.parse(decodedConfig);
         if (parsedConfig && typeof parsedConfig === 'object' && 'type' in parsedConfig) {
-          setConfig(parsedConfig as FormConfig);
           setInitialType(parsedConfig.type);
           onConfigChange(parsedConfig as FormConfig);
         }
@@ -91,33 +89,34 @@ const FormConfigurator: React.FC<FormConfiguratorProps> = ({ onConfigChange }) =
         </div>
       )}
 
+      {/* 对象配置 */}
       {config && config.type === 'object' && (
         <ObjectConfigurator 
           config={config} 
           onFieldsChange={(fields) => {
             const newConfig: FormConfig = { type: 'object', fields };
-            setConfig(newConfig);
             onConfigChange(newConfig);
           }}
         />
       )}
+      
+      {/* 数组配置 */}
       {config && config.type === 'array' && (
         <ArrayConfigurator 
           config={config} 
-          onElementConfigChange={(elementConfig) => {
-            const newConfig: FormConfig = { type: 'array', elementConfig };
-            setConfig(newConfig);
+          onElementChange={(element) => {
+            const newConfig: FormConfig = { type: 'array', element };
             onConfigChange(newConfig);
           }}
         />
       )}
 
-      {config && (
+      {/* {config && (
         <div>
           <h3>当前配置预览:</h3>
           <pre>{JSON.stringify(config, null, 2)}</pre>
         </div>
-      )}
+      )} */}
 
       {/* 导出配置模态框 */}
       {showExportModal && (
@@ -131,7 +130,6 @@ const FormConfigurator: React.FC<FormConfiguratorProps> = ({ onConfigChange }) =
       {showImportModal && (
         <ImportConfigModal 
           onImport={(newConfig) => {
-            setConfig(newConfig);
             onConfigChange(newConfig);
             // 根据导入的配置类型，可能需要更新 initialType
             if (newConfig.type) {

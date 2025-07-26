@@ -10,57 +10,57 @@ import ArrayConfiguratorSelf from './ArrayConfigurator';
 
 interface ArrayConfiguratorProps {
   config: ArrayConfig;
-  onElementConfigChange: (config: ArrayElementConfig) => void; // 数组元素配置变更回调
+  onElementChange: (config: ArrayElementConfig) => void; // 数组元素配置变更回调
   path?: string; // 用于追踪嵌套路径
 }
 
-const ArrayConfigurator: React.FC<ArrayConfiguratorProps> = ({ config, onElementConfigChange, path = 'root' }) => {
-  const [elementType, setElementType] = useState<FieldType>(config.elementConfig.elementType);
+const ArrayConfigurator: React.FC<ArrayConfiguratorProps> = ({ config, onElementChange, path = 'root' }) => {
+  const [elementType, setElementType] = useState<FieldType>(config.element.type);
   const [nestedObjectConfig, setNestedObjectConfig] = useState<ObjectConfig| undefined>(
-    config.elementConfig.elementType === 'object'  ? config.elementConfig.nestedObjectConfig : undefined
+    config.element.type === 'object'  ? config.element.nestedObject : undefined
   );
   const [nestedArrayConfig, setNestedArrayConfig] = useState<ArrayConfig | undefined>(
-    config.elementConfig.elementType === 'array' ? config.elementConfig.nestedArrayConfig : undefined
+    config.element.type === 'array' ? config.element.nestedArray : undefined
   );
 
   useEffect(() => {
-    setElementType(config.elementConfig.elementType);
+    setElementType(config.element.type);
   }, [config]);
 
   const handleElementTypeChange = (newType: FieldType) => {
     setElementType(newType);
-    let newElementConfig: ArrayElementConfig = { elementType: newType };
+    let newElementConfig: ArrayElementConfig = { type: newType };
 
     if (newType === 'object') {
       const defaultObjectConfig: Extract<FormConfig, { type: 'object' }> = { type: 'object', fields: [] };
       setNestedObjectConfig(defaultObjectConfig);
       setNestedArrayConfig(undefined);
-      newElementConfig = { ...newElementConfig, nestedObjectConfig: defaultObjectConfig };
+      newElementConfig = { ...newElementConfig, nestedObject: defaultObjectConfig };
     } else if (newType === 'array') {
-      const defaultArrayConfig: ArrayConfig = { type: 'array', elementConfig: { elementType: 'string' } }; // 默认嵌套数组元素为 string
+      const defaultArrayConfig: ArrayConfig = { type: 'array', element: { type: 'string' } }; // 默认嵌套数组元素为 string
       setNestedArrayConfig(defaultArrayConfig);
       setNestedObjectConfig(undefined);
-      newElementConfig = { ...newElementConfig, nestedArrayConfig: defaultArrayConfig };
+      newElementConfig = { ...newElementConfig, nestedArray: defaultArrayConfig };
     } else {
       setNestedObjectConfig(undefined);
       setNestedArrayConfig(undefined);
     }
-    onElementConfigChange(newElementConfig);
+    onElementChange(newElementConfig);
   };
 
   const handleNestedObjectConfigChange = (updatedFields: ObjectFieldConfig[]) => {
     if (elementType === 'object') {
       const newNestedConfig: ObjectConfig = { type: 'object', fields: updatedFields };
       setNestedObjectConfig(newNestedConfig);
-      onElementConfigChange({ elementType, nestedObjectConfig: newNestedConfig });
+      onElementChange({ type: elementType, nestedObject: newNestedConfig });
     }
   };
 
   const handleNestedArrayConfigChange = (updatedElementConfig: ArrayElementConfig) => {
     if (elementType === 'array') {
-      const newNestedConfig: ArrayConfig = { type: 'array', elementConfig: updatedElementConfig };
+      const newNestedConfig: ArrayConfig = { type: 'array', element: updatedElementConfig };
       setNestedArrayConfig(newNestedConfig);
-      onElementConfigChange({ elementType, nestedArrayConfig: newNestedConfig});
+      onElementChange({ type: elementType, nestedArray: newNestedConfig});
     }
   };
 
@@ -88,7 +88,7 @@ const ArrayConfigurator: React.FC<ArrayConfiguratorProps> = ({ config, onElement
         <div style={{ marginLeft: '20px', borderLeft: '2px solid #ccc', paddingLeft: '10px' }}>
           <ArrayConfiguratorSelf 
             config={nestedArrayConfig} 
-            onElementConfigChange={handleNestedArrayConfigChange} 
+            onElementChange={handleNestedArrayConfigChange} 
             path={`${path}.elements`}
           />
         </div>

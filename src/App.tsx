@@ -28,7 +28,7 @@ function App() {
       </header>
       <main className="main-content">
         <section className="config-section">
-          <FormConfigurator onConfigChange={handleConfigChange} />
+          <FormConfigurator config={formConfig} onConfigChange={handleConfigChange} />
         </section>
         <section className="filler-section">
           <FormDataFiller config={formConfig} formData={formData} onDataChange={handleDataChange} />

@@ -56,9 +56,9 @@ const ObjectConfigurator: React.FC<ObjectConfiguratorProps> = ({ config, onField
     let updatedField: ObjectFieldConfig;
 
     if (fieldToUpdate.type === 'object' && 'type' in nestedConfig && nestedConfig.type === 'object') {
-      updatedField = { ...fieldToUpdate, nestedObjectConfig: nestedConfig as ObjectConfig };
+      updatedField = { ...fieldToUpdate, nestedObject: nestedConfig as ObjectConfig };
     } else if (fieldToUpdate.type === 'array' && 'type' in nestedConfig && nestedConfig.type === 'array') {
-      updatedField = { ...fieldToUpdate, nestedArrayConfig: nestedConfig as ArrayConfig };
+      updatedField = { ...fieldToUpdate, nestedArray: nestedConfig as ArrayConfig };
     } else {
       console.error('Mismatched types in handleNestedConfigChange');
       return;
@@ -72,24 +72,24 @@ const ObjectConfigurator: React.FC<ObjectConfiguratorProps> = ({ config, onField
       <h4>配置对象字段:</h4>
       {fields.map((field, index) => (
         <div key={field.id} className="field-config-item">
-          <span>{field.fieldName} ({field.keyName}): {field.type}</span>
+          <span>{field.name} ({field.key}): {field.type}</span>
           <button onClick={() => handleOpenModalForEdit(index)}>编辑</button>
           <button onClick={() => handleDeleteField(index)}>删除</button>
           {field.type === 'object' && (
             <div style={{ marginLeft: '20px', borderLeft: '2px solid #ccc', paddingLeft: '10px' }}>
               <ObjectConfigurator 
-                config={field.nestedObjectConfig || { type: 'object', fields: [] }} 
+                config={field.nestedObject || { type: 'object', fields: [] }} 
                 onFieldsChange={(updatedNestedFields) => handleNestedConfigChange(index, { type: 'object', fields: updatedNestedFields })} 
-                path={`${path}.${field.keyName}`}
+                path={`${path}.${field.key}`}
               />
             </div>
           )}
           {field.type === 'array' && (
             <div style={{ marginLeft: '20px', borderLeft: '2px solid #ccc', paddingLeft: '10px' }}>
               <ArrayConfigurator 
-                config={field.nestedArrayConfig || { type: "array", elementConfig: { elementType: 'string' } }} 
-                onElementConfigChange={(updatedElementConfig) => handleNestedConfigChange(index, { type: "array", elementConfig: updatedElementConfig })} 
-                path={`${path}.${field.keyName}`}
+                config={field.nestedArray || { type: "array", element: { type: 'string' } }} 
+                onElementChange={(updatedElementConfig) => handleNestedConfigChange(index, { type: "array", element: updatedElementConfig })} 
+                path={`${path}.${field.key}`}
               />
             </div>
           )}
@@ -120,8 +120,8 @@ const ObjectConfigurator: React.FC<ObjectConfiguratorProps> = ({ config, onField
             setEditingFieldIndex(null);
           }}
           existingKeys={fields
-            .map(f => f.keyName)
-            .filter(k => editingField && k !== editingField.keyName) // Exclude current field's key if editing
+            .map(f => f.key)
+            .filter(k => editingField && k !== editingField.key) // Exclude current field's key if editing
           }
           path={path}
         />

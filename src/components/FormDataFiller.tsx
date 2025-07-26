@@ -14,7 +14,7 @@ const initializeDataFromConfig = (currentConfig: FormConfig): any => {
     if ('type' in currentConfig && currentConfig.type === 'object') {
       const objData: { [key: string]: any } = {};
       currentConfig.fields.forEach(field => {
-        objData[field.keyName] = getDefaultValue(field.type, field.nestedObjectConfig, field.nestedArrayConfig);
+        objData[field.key] = getDefaultValue(field.type, field.nestedObject, field.nestedArray);
       });
       return objData;
     } else if ('type' in currentConfig && currentConfig.type === 'array') {
@@ -99,7 +99,7 @@ const FormDataFiller: React.FC<FormDataFillerProps> = ({ config, formData, onDat
       }
     }
 
-    currentArray.push(getDefaultValue(itemConfig.elementConfig.elementType, itemConfig.elementConfig.nestedObjectConfig, itemConfig.elementConfig.nestedArrayConfig));
+    currentArray.push(getDefaultValue(itemConfig.element.type, itemConfig.element.nestedObject, itemConfig.element.nestedArray));
     onDataChange(newData);
   };
 
@@ -119,22 +119,22 @@ const FormDataFiller: React.FC<FormDataFillerProps> = ({ config, formData, onDat
 
   // 渲染字段
   const renderField = (fieldConfig: ObjectFieldConfig, currentPath: string[]) => {
-    const value = getFieldValue(formData, currentPath.concat(fieldConfig.keyName));
+    const value = getFieldValue(formData, currentPath.concat(fieldConfig.key));
 
     switch (fieldConfig.type) {
       case 'string':
-        return <input type="text" value={value || ''} onChange={(e) => handleInputChange(currentPath.concat(fieldConfig.keyName), e.target.value)} />;
+        return <input type="text" value={value || ''} onChange={(e) => handleInputChange(currentPath.concat(fieldConfig.key), e.target.value)} />;
       case 'number':
-        return <input type="number" value={value || 0} onChange={(e) => handleInputChange(currentPath.concat(fieldConfig.keyName), parseFloat(e.target.value))} />;
+        return <input type="number" value={value || 0} onChange={(e) => handleInputChange(currentPath.concat(fieldConfig.key), parseFloat(e.target.value))} />;
       case 'boolean':
-        return <input type="checkbox" checked={!!value} onChange={(e) => handleInputChange(currentPath.concat(fieldConfig.keyName), e.target.checked)} />;
+        return <input type="checkbox" checked={!!value} onChange={(e) => handleInputChange(currentPath.concat(fieldConfig.key), e.target.checked)} />;
       case 'object':
-        return fieldConfig.nestedObjectConfig ? 
-          renderForm(fieldConfig.nestedObjectConfig, currentPath.concat(fieldConfig.keyName)) :
+        return fieldConfig.nestedObject ? 
+          renderForm(fieldConfig.nestedObject, currentPath.concat(fieldConfig.key)) :
           <span>Object configuration missing</span>;
       case 'array':
-        return fieldConfig.nestedArrayConfig ? 
-          renderArray(fieldConfig.nestedArrayConfig, currentPath.concat(fieldConfig.keyName)) : 
+        return fieldConfig.nestedArray ? 
+          renderArray(fieldConfig.nestedArray, currentPath.concat(fieldConfig.key)) : 
           <span>Array configuration missing</span>;
       default: return null;
     }
@@ -144,7 +144,7 @@ const FormDataFiller: React.FC<FormDataFillerProps> = ({ config, formData, onDat
   const renderArrayElement = (elementConfig: ArrayElementConfig, itemData: any, itemPath: string[]) => {
     // Note: itemData is the actual data for the current array item.
     // itemPath is the path to this specific item in the overall formData.
-    switch (elementConfig.elementType) {
+    switch (elementConfig.type) {
       case 'string':
         return <input type="text" value={itemData || ''} onChange={(e) => handleInputChange(itemPath, e.target.value)} />;
       case 'number':
@@ -152,12 +152,12 @@ const FormDataFiller: React.FC<FormDataFillerProps> = ({ config, formData, onDat
       case 'boolean':
         return <input type="checkbox" checked={!!itemData} onChange={(e) => handleInputChange(itemPath, e.target.checked)} />;
       case 'object':
-        return elementConfig.nestedObjectConfig ? 
-          renderForm(elementConfig.nestedObjectConfig, itemPath) :
+        return elementConfig.nestedObject ? 
+          renderForm(elementConfig.nestedObject, itemPath) :
           <span>Object configuration missing</span>;
       case 'array': // Nested array
-        return elementConfig.nestedArrayConfig ? 
-          renderArray(elementConfig.nestedArrayConfig, itemPath) :
+        return elementConfig.nestedArray ? 
+          renderArray(elementConfig.nestedArray, itemPath) :
           <span>Nested array configuration missing</span>;
       default: return null;
     }
@@ -176,7 +176,7 @@ const FormDataFiller: React.FC<FormDataFillerProps> = ({ config, formData, onDat
       <div className="array-filler-container">
         {arrayData.map((item: any, index: number) => (
           <div key={index} className="array-item-filler">
-            {renderArrayElement(arrayConfig.elementConfig, item, currentPath.concat(index.toString()))}
+            {renderArrayElement(arrayConfig.element, item, currentPath.concat(index.toString()))}
             <button onClick={() => removeArrayItem(currentPath, index)}>删除项</button>
           </div>
         ))}
@@ -192,8 +192,8 @@ const FormDataFiller: React.FC<FormDataFillerProps> = ({ config, formData, onDat
       return (
         <div className="object-filler-container">
           {currentConfig.fields.map(field => (
-            <div key={field.id || field.keyName} className="form-field-filler">
-              <label>{field.fieldName || field.keyName}:</label>
+            <div key={field.id || field.key} className="form-field-filler">
+              <label>{field.name || field.key}:</label>
               {renderField(field, currentPath)}
               {field.remark && <small> ({field.remark})</small>}
             </div>

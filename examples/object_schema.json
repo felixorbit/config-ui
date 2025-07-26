@@ -1,0 +1,65 @@
+{
+  "type": "object",
+  "fields": [
+    {
+      "id": "root-field-a",
+      "name": "姓名",
+      "key": "name",
+      "type": "string",
+      "remark": ""
+    },
+    {
+      "id": "root-field-age",
+      "name": "年龄",
+      "key": "age",
+      "type": "number",
+      "remark": ""
+    },
+    {
+      "id": "root-field-is_married",
+      "name": "是否已婚",
+      "key": "is_married",
+      "type": "boolean",
+      "remark": ""
+    },
+    {
+      "id": "root-field-address",
+      "name": "地址",
+      "key": "address",
+      "type": "object",
+      "remark": "",
+      "nestedObject": {
+        "type": "object",
+        "fields": [
+          {
+            "id": "root.address-field-province",
+            "name": "省份",
+            "key": "province",
+            "type": "string",
+            "remark": ""
+          },
+          {
+            "id": "root.address-field-district",
+            "name": "详细地址",
+            "key": "detail",
+            "type": "string",
+            "remark": "具体到门牌号"
+          }
+        ]
+      }
+    },
+    {
+      "id": "root-field-contact",
+      "name": "联系方式",
+      "key": "contact",
+      "type": "array",
+      "remark": "",
+      "nestedArray": {
+        "type": "array",
+        "element": {
+          "type": "string"
+        }
+      }
+    }
+  ]
+}

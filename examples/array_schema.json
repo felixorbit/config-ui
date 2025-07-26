@@ -1,0 +1,38 @@
+{
+  "type": "array",
+  "element": {
+    "type": "object",
+    "nestedObject": {
+      "type": "object",
+      "fields": [
+        {
+          "id": "root.elements-field-name",
+          "name": "名字",
+          "key": "name",
+          "type": "string",
+          "remark": ""
+        },
+        {
+          "id": "root.elements-field-score",
+          "name": "分数",
+          "key": "score",
+          "type": "number",
+          "remark": ""
+        },
+        {
+          "id": "root.elements-field-prizes",
+          "name": "奖品列表",
+          "key": "prizes",
+          "type": "array",
+          "remark": "",
+          "nestedArray": {
+            "type": "array",
+            "element": {
+              "type": "string"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

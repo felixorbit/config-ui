@@ -12,23 +12,23 @@ export type FieldType = BasicType | ComplexType;
 // 对象字段配置接口
 export interface ObjectFieldConfig {
   id: string; // 唯一标识
-  fieldName: string; // 字段显示名称
-  keyName: string; // 字段的 key
+  name: string; // 字段显示名称
+  key: string; // 字段的 key
   type: FieldType;
   remark?: string; // 备注
   // 当 type 为 'object' 时，嵌套的对象配置
-  nestedObjectConfig?: ObjectConfig;
+  nestedObject?: ObjectConfig;
   // 当 type 为 'array' 时，嵌套的数组元素类型配置
-  nestedArrayConfig?: ArrayConfig;
+  nestedArray?: ArrayConfig;
 }
 
 // 数组元素配置接口
 export interface ArrayElementConfig {
-  elementType: FieldType;
-  // 当 elementType 为 'object' 时，嵌套的对象配置
-  nestedObjectConfig?: ObjectConfig;
-  // 当 elementType 为 'array' 时，嵌套的数组元素类型配置 (支持多维数组)
-  nestedArrayConfig?: ArrayConfig;
+  type: FieldType;
+  // 当 type 为 'object' 时，嵌套的对象配置
+  nestedObject?: ObjectConfig;
+  // 当 type 为 'array' 时，嵌套的数组元素类型配置 (支持多维数组)
+  nestedArray?: ArrayConfig;
 }
 
 export interface ObjectConfig {
@@ -38,7 +38,7 @@ export interface ObjectConfig {
 
 export interface ArrayConfig {
   type: 'array';
-  elementConfig: ArrayElementConfig;
+  element: ArrayElementConfig;
 }
 
 // 表单配置接口
