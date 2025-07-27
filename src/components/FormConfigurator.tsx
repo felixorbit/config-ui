@@ -4,6 +4,7 @@ import type { FormConfig, InitialFormType } from '../types';
 import ObjectConfigurator from './ObjectConfigurator';
 import ArrayConfigurator from './ArrayConfigurator';
 import './Modal.css'; // 模态框样式
+import './FormConfigurator.css'; // 表单配置样式
 
 // 导入/导出模态框组件
 import ExportConfigModal from './ExportConfigModal'; 
@@ -73,16 +74,16 @@ const FormConfigurator: React.FC<FormConfiguratorProps> = ({ config, onConfigCha
 
   return (
     <div className="form-configurator">
-      <h2>1. 配置表单</h2>
+      <h2>表单配置</h2>
       
       <div className="config-actions">
         <button onClick={() => setShowImportModal(true)}>导入配置</button>
         <button onClick={() => setShowExportModal(true)}>导出配置</button>
-        <button onClick={handleShare}>分享</button>
+        <button onClick={handleShare}>分享链接</button>
       </div>
 
       {!initialType && (
-        <div>
+        <div className="type-selection">
           <p>请选择表单的根类型：</p>
           <button onClick={() => handleInitialTypeSelect('object')}>对象 (Object)</button>
           <button onClick={() => handleInitialTypeSelect('array')}>数组 (Array)</button>

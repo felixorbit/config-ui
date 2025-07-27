@@ -3,11 +3,24 @@
   padding: 15px;
   border-radius: 8px;
   background-color: white;
+  margin-top: 20px;
+  border-top: 2px solid #e9ecef;
 }
 
 .json-display h2 {
   margin-bottom: 15px;
   color: #0056b3;
+  font-size: 1.4rem;
+  display: flex;
+  align-items: center;
+}
+
+.json-display h2::before {
+  content: '{ }';
+  margin-right: 10px;
+  font-family: monospace;
+  color: #6c757d;
+  font-weight: bold;
 }
 
 .json-actions {
@@ -15,6 +28,7 @@
   align-items: center;
   flex-wrap: wrap;
   margin-bottom: 15px;
+  gap: 8px;
 }
 
 .json-display pre {
@@ -25,12 +39,15 @@
   overflow-x: auto;
   max-height: 400px;
   overflow-y: auto;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+  font-size: 0.9rem;
 }
 
 .json-display code {
-  font-family: monospace;
+  font-family: 'Fira Code', 'Consolas', 'Monaco', 'Andale Mono', monospace;
   white-space: pre-wrap;
   word-break: break-word;
+  color: #333;
 }
 
 .copy-message {

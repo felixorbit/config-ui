@@ -3,50 +3,109 @@
 }
 
 .field-config-item {
-  margin: 8px 0;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  background-color: #f9f9f9;
+  margin: 12px 0;
+  padding: 15px;
+  border: 1px solid #e9ecef;
+  border-radius: 6px;
+  background-color: #fdfdfd;
   transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.field-config-item:hover {
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
 }
 
 .field-config-item.drag-over {
-  border: 1px dashed #2196F3;
-  background-color: rgba(33, 150, 243, 0.1);
+  border: 2px dashed #007bff;
+  background-color: rgba(0, 123, 255, 0.05);
 }
 
 .field-header {
   display: flex;
   align-items: center;
-  margin-bottom: 8px;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #f0f0f0;
 }
 
 .drag-handle {
   cursor: grab;
-  margin-right: 10px;
-  color: #888;
+  margin-right: 12px;
+  color: #6c757d;
   font-size: 16px;
   user-select: none;
 }
 
 .drag-handle:hover {
-  color: #555;
+  color: #007bff;
 }
 
 .field-actions {
   margin-left: auto;
+  display: flex;
+  gap: 5px;
 }
 
 .field-actions button {
-  margin-left: 5px;
-  padding: 3px 8px;
-  background-color: #f0f0f0;
-  border: 1px solid #ddd;
-  border-radius: 3px;
+  padding: 4px 10px;
+  background-color: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 4px;
   cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.2s ease;
 }
 
 .field-actions button:hover {
-  background-color: #e0e0e0;
+  background-color: #e9ecef;
+  border-color: #dee2e6;
+}
+
+.field-actions button.delete {
+  background-color: #fff5f5;
+  color: #dc3545;
+  border-color: #ffebeb;
+}
+
+.field-actions button.delete:hover {
+  background-color: #dc3545;
+  color: white;
+  border-color: #dc3545;
+}
+
+/* 添加字段按钮 */
+.object-configurator > button {
+  margin-top: 15px;
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.object-configurator > button:hover {
+  background-color: #0069d9;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.object-configurator > button:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+/* 嵌套容器样式 */
+.nested-container {
+  margin-left: 20px;
+  border-left: 2px solid #007bff;
+  padding-left: 15px;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }

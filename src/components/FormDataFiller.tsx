@@ -1,7 +1,7 @@
 // src/components/FormDataFiller.tsx
 import React, { useEffect } from 'react';
 import type { FormConfig, FormData, ObjectFieldConfig, ArrayElementConfig, FieldType, ArrayConfig, ObjectConfig } from '../types';
-// import './FormDataFiller.css'; // 样式文件后续创建
+import './FormDataFiller.css'; // 表单填写样式
 
 interface FormDataFillerProps {
   config: FormConfig | null;
@@ -212,7 +212,7 @@ const FormDataFiller: React.FC<FormDataFillerProps> = ({ config, formData, onDat
 
   return (
     <div className="form-data-filler">
-      <h2>2. 填写表单</h2>
+      <h2>填写表单数据</h2>
       {renderForm(config)}
     </div>
   );

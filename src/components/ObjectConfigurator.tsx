@@ -128,7 +128,7 @@ const ObjectConfigurator: React.FC<ObjectConfiguratorProps> = ({ config, onField
             <span>{field.name} ({field.key}): {field.type}</span>
             <div className="field-actions">
               <button onClick={() => handleOpenModalForEdit(index)}>编辑</button>
-              <button onClick={() => handleDeleteField(index)}>删除</button>
+              <button className="delete" onClick={() => handleDeleteField(index)}>删除</button>
             </div>
           </div>
           {field.type === 'object' && (

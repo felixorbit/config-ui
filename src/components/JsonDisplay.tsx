@@ -1,5 +1,5 @@
 // src/components/JsonDisplay.tsx
-import React from 'react';
+import React, { useEffect } from 'react';
 import type { FormData } from '../types';
 import './JsonDisplay.css';
 
@@ -10,6 +10,21 @@ interface JsonDisplayProps {
 const JsonDisplay: React.FC<JsonDisplayProps> = ({ data }) => {
   const [generatedJson, setGeneratedJson] = React.useState<string>('');
   const [copySuccess, setCopySuccess] = React.useState<string>('');
+
+  // 当数据变化时自动更新JSON
+  useEffect(() => {
+    if (data) {
+      try {
+        const jsonString = JSON.stringify(data, null, 2);
+        setGeneratedJson(jsonString);
+      } catch (error) {
+        console.error('Error generating JSON:', error);
+        setGeneratedJson('Error generating JSON. Check console for details.');
+      }
+    } else {
+      setGeneratedJson('No data to generate JSON from.');
+    }
+  }, [data]);
 
   const handleGenerateJson = () => {
     if (data) {
@@ -46,7 +61,7 @@ const JsonDisplay: React.FC<JsonDisplayProps> = ({ data }) => {
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'config.json';
+      a.download = 'data.json';
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -56,9 +71,9 @@ const JsonDisplay: React.FC<JsonDisplayProps> = ({ data }) => {
 
   return (
     <div className="json-display">
-      <h2>3. 生成 JSON</h2>
+      <h2>JSON 数据预览</h2>
       <div className="json-actions">
-        <button onClick={handleGenerateJson}>生成 JSON</button>
+        <button onClick={handleGenerateJson}>刷新 JSON</button>
         {generatedJson && (
           <>
             <button onClick={handleCopyJson}>复制 JSON</button>
