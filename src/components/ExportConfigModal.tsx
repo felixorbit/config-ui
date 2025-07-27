@@ -9,13 +9,15 @@ interface ExportConfigModalProps {
 
 const ExportConfigModal: React.FC<ExportConfigModalProps> = ({ config, onClose }) => {
   const configJson = JSON.stringify(config, null, 2);
+  const [copySuccess, setCopySuccess] = React.useState<string>('');
 
   const handleCopy = () => {
     navigator.clipboard.writeText(configJson).then(() => {
-      alert('配置已复制到剪贴板！');
+      setCopySuccess('已复制到剪贴板！');
+      setTimeout(() => setCopySuccess(''), 2000);
     }).catch(err => {
       console.error('复制失败: ', err);
-      alert('复制失败，请手动复制。');
+      setCopySuccess('复制失败，请手动复制。');
     });
   };
 
@@ -41,6 +43,7 @@ const ExportConfigModal: React.FC<ExportConfigModalProps> = ({ config, onClose }
           <button onClick={handleDownload}>下载</button>
           <button onClick={onClose}>关闭</button>
         </div>
+        {copySuccess && <span className="copy-message">{copySuccess}</span>}
       </div>
     </div>
   );

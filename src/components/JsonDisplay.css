@@ -1,0 +1,63 @@
+/* src/components/JsonDisplay.css */
+.json-display {
+  padding: 15px;
+  border-radius: 8px;
+  background-color: white;
+}
+
+.json-display h2 {
+  margin-bottom: 15px;
+  color: #0056b3;
+}
+
+.json-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 15px;
+}
+
+.json-display pre {
+  background-color: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 4px;
+  padding: 15px;
+  overflow-x: auto;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.json-display code {
+  font-family: monospace;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.copy-message {
+  margin-left: 10px;
+  color: #28a745;
+  font-size: 0.9rem;
+  animation: fadeOut 2s forwards;
+  animation-delay: 1.5s;
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .json-actions {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .json-actions button {
+    margin: 5px 5px 5px 0;
+  }
+  
+  .copy-message {
+    margin: 5px 0 0 0;
+  }
+}
