@@ -38,6 +38,18 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* 重置按钮样式 */
+.reset-button {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+.reset-button:hover {
+  background-color: #f1b0b7;
+  color: #721c24;
+}
+
 /* 初始类型选择 */
 .type-selection {
   margin: 20px 0;

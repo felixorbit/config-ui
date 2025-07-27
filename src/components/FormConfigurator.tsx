@@ -38,6 +38,12 @@ const FormConfigurator: React.FC<FormConfiguratorProps> = ({ config, onConfigCha
     }
   };
 
+  // 重置配置
+  const handleReset = () => {
+    setInitialType(null);
+    onConfigChange(null as any);
+  };
+
   // 分享链接
   const handleShare = () => {
     if (config) {
@@ -80,6 +86,7 @@ const FormConfigurator: React.FC<FormConfiguratorProps> = ({ config, onConfigCha
         <button onClick={() => setShowImportModal(true)}>导入配置</button>
         <button onClick={() => setShowExportModal(true)}>导出配置</button>
         <button onClick={handleShare}>分享链接</button>
+        <button onClick={handleReset} className="reset-button">重置配置</button>
       </div>
 
       {!initialType && (
