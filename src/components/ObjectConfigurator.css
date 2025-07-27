@@ -1,0 +1,52 @@
+.object-configurator {
+  padding: 10px;
+}
+
+.field-config-item {
+  margin: 8px 0;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+  transition: all 0.2s ease;
+}
+
+.field-config-item.drag-over {
+  border: 1px dashed #2196F3;
+  background-color: rgba(33, 150, 243, 0.1);
+}
+
+.field-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.drag-handle {
+  cursor: grab;
+  margin-right: 10px;
+  color: #888;
+  font-size: 16px;
+  user-select: none;
+}
+
+.drag-handle:hover {
+  color: #555;
+}
+
+.field-actions {
+  margin-left: auto;
+}
+
+.field-actions button {
+  margin-left: 5px;
+  padding: 3px 8px;
+  background-color: #f0f0f0;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.field-actions button:hover {
+  background-color: #e0e0e0;
+}

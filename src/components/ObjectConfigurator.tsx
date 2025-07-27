@@ -1,8 +1,9 @@
 // src/components/ObjectConfigurator.tsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import type { ObjectFieldConfig, ObjectConfig, ArrayConfig } from '../types';
 import ArrayConfigurator from './ArrayConfigurator';
 import FormFieldModal from './FormFieldModal';
+import './ObjectConfigurator.css';
 
 interface ObjectConfiguratorProps {
   config: ObjectConfig;
@@ -15,9 +16,14 @@ const ObjectConfigurator: React.FC<ObjectConfiguratorProps> = ({ config, onField
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingField, setEditingField] = useState<Partial<ObjectFieldConfig> | null>(null); // Partial for new field
   const [editingFieldIndex, setEditingFieldIndex] = useState<number | null>(null);
+  const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
+  const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
+  const fieldRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
     setFields(config.fields);
+    // 重置引用数组大小以匹配字段数量
+    fieldRefs.current = fieldRefs.current.slice(0, config.fields.length);
   }, [config]);
 
   // 新增字段打开模态框
@@ -49,6 +55,42 @@ const ObjectConfigurator: React.FC<ObjectConfiguratorProps> = ({ config, onField
     setFields(updatedFields);
     onFieldsChange(updatedFields);
   };
+  
+  // 处理拖拽开始
+  const handleDragStart = (index: number) => {
+    setDraggedIndex(index);
+  };
+
+  // 处理拖拽结束
+  const handleDragEnd = () => {
+    // 如果有有效的拖拽和放置索引
+    if (draggedIndex !== null && dragOverIndex !== null && draggedIndex !== dragOverIndex) {
+      // 创建字段的新顺序
+      const updatedFields = [...fields];
+      const [draggedField] = updatedFields.splice(draggedIndex, 1);
+      updatedFields.splice(dragOverIndex, 0, draggedField);
+      
+      // 更新状态并触发回调
+      setFields(updatedFields);
+      onFieldsChange(updatedFields);
+    }
+    
+    // 重置拖拽状态
+    setDraggedIndex(null);
+    setDragOverIndex(null);
+  };
+
+  // 处理拖拽经过
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>, index: number) => {
+    e.preventDefault(); // 允许放置
+    setDragOverIndex(index);
+  };
+
+  // 处理放置
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    handleDragEnd();
+  };
 
   // 嵌套对象或数组的配置更新回调
   const handleNestedConfigChange = (fieldIndex: number, nestedConfig: ObjectConfig | ArrayConfig) => {
@@ -71,10 +113,24 @@ const ObjectConfigurator: React.FC<ObjectConfiguratorProps> = ({ config, onField
     <div className="object-configurator">
       <h4>配置对象字段:</h4>
       {fields.map((field, index) => (
-        <div key={field.id} className="field-config-item">
-          <span>{field.name} ({field.key}): {field.type}</span>
-          <button onClick={() => handleOpenModalForEdit(index)}>编辑</button>
-          <button onClick={() => handleDeleteField(index)}>删除</button>
+        <div 
+          key={field.id} 
+          className={`field-config-item ${dragOverIndex === index ? 'drag-over' : ''}`}
+          draggable
+          onDragStart={() => handleDragStart(index)}
+          onDragOver={(e) => handleDragOver(e, index)}
+          onDragEnd={handleDragEnd}
+          onDrop={handleDrop}
+          ref={(el) => { fieldRefs.current[index] = el; }}
+        >
+          <div className="field-header">
+            <span className="drag-handle" title="拖动调整顺序">⋮⋮</span>
+            <span>{field.name} ({field.key}): {field.type}</span>
+            <div className="field-actions">
+              <button onClick={() => handleOpenModalForEdit(index)}>编辑</button>
+              <button onClick={() => handleDeleteField(index)}>删除</button>
+            </div>
+          </div>
           {field.type === 'object' && (
             <div style={{ marginLeft: '20px', borderLeft: '2px solid #ccc', paddingLeft: '10px' }}>
               <ObjectConfigurator 
