@@ -16,7 +16,7 @@ interface FormConfiguratorProps {
 }
 
 const FormConfigurator: React.FC<FormConfiguratorProps> = ({ config, onConfigChange }) => {
-  const [initialType, setInitialType] = useState<InitialFormType | null>(null);
+  const [initialType, setInitialType] = useState<InitialFormType | null>(config?.type || null);
   const [showExportModal, setShowExportModal] = useState(false);
   const [showImportModal, setShowImportModal] = useState(false);
 
