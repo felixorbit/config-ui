@@ -130,7 +130,7 @@ const FormDataFiller: React.FC<FormDataFillerProps> = ({ config, formData, onDat
         return <input type="checkbox" checked={!!value} onChange={(e) => handleInputChange(currentPath.concat(fieldConfig.key), e.target.checked)} />;
       case 'object':
         return fieldConfig.nestedObject ? 
-          renderForm(fieldConfig.nestedObject, currentPath.concat(fieldConfig.key)) :
+          renderObject(fieldConfig.nestedObject, currentPath.concat(fieldConfig.key)) :
           <span>Object configuration missing</span>;
       case 'array':
         return fieldConfig.nestedArray ? 
@@ -138,6 +138,21 @@ const FormDataFiller: React.FC<FormDataFillerProps> = ({ config, formData, onDat
           <span>Array configuration missing</span>;
       default: return null;
     }
+  };
+
+  // 渲染对象
+  const renderObject = (objConfig: ObjectConfig, currentPath: string[]) => {
+      return (
+        <div className="object-filler-container">
+          {objConfig.fields.map(field => (
+            <div key={field.id || field.key} className="form-field-filler">
+              <label>{field.name || field.key}:</label>
+              {renderField(field, currentPath)}
+              {field.remark && <small> ({field.remark})</small>}
+            </div>
+          ))}
+        </div>
+      );
   };
 
   // 渲染数组元素
@@ -153,7 +168,7 @@ const FormDataFiller: React.FC<FormDataFillerProps> = ({ config, formData, onDat
         return <input type="checkbox" checked={!!itemData} onChange={(e) => handleInputChange(itemPath, e.target.checked)} />;
       case 'object':
         return elementConfig.nestedObject ? 
-          renderForm(elementConfig.nestedObject, itemPath) :
+          renderObject(elementConfig.nestedObject, itemPath) :
           <span>Object configuration missing</span>;
       case 'array': // Nested array
         return elementConfig.nestedArray ? 
@@ -189,17 +204,7 @@ const FormDataFiller: React.FC<FormDataFillerProps> = ({ config, formData, onDat
     if (!currentConfig) return <p>表单配置为空。</p>;
 
     if (currentConfig.type === 'object') {
-      return (
-        <div className="object-filler-container">
-          {currentConfig.fields.map(field => (
-            <div key={field.id || field.key} className="form-field-filler">
-              <label>{field.name || field.key}:</label>
-              {renderField(field, currentPath)}
-              {field.remark && <small> ({field.remark})</small>}
-            </div>
-          ))}
-        </div>
-      );
+      return renderObject(currentConfig, currentPath);
     } else if (currentConfig.type === 'array') {
       return renderArray(currentConfig, currentPath);
     }
