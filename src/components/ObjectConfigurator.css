@@ -1,111 +1,90 @@
 .object-configurator {
-  padding: 10px;
+  padding: 0;
+}
+
+.field-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
 .field-config-item {
-  margin: 12px 0;
-  padding: 15px;
-  border: 1px solid #e9ecef;
-  border-radius: 6px;
-  background-color: #fdfdfd;
-  transition: all 0.2s ease;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  padding: 1.5rem;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background-color: var(--card-background);
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
 .field-config-item:hover {
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 12px var(--shadow-color);
 }
 
 .field-config-item.drag-over {
-  border: 2px dashed #007bff;
+  border-color: var(--primary-color);
   background-color: rgba(0, 123, 255, 0.05);
 }
 
 .field-header {
   display: flex;
   align-items: center;
-  margin-bottom: 12px;
-  padding-bottom: 8px;
-  border-bottom: 1px solid #f0f0f0;
+  margin-bottom: 1rem;
 }
 
 .drag-handle {
   cursor: grab;
-  margin-right: 12px;
-  color: #6c757d;
-  font-size: 16px;
+  margin-right: 1rem;
+  color: #adb5bd;
+  font-size: 1.2rem;
   user-select: none;
+  transition: color 0.2s ease;
 }
 
 .drag-handle:hover {
-  color: #007bff;
+  color: var(--primary-color);
 }
 
 .field-actions {
   margin-left: auto;
   display: flex;
-  gap: 5px;
+  gap: 0.5rem;
 }
 
 .field-actions button {
-  padding: 4px 10px;
-  background-color: #f8f9fa;
-  border: 1px solid #e9ecef;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 0.85rem;
-  transition: all 0.2s ease;
+  background-color: transparent;
+  border: none;
+  color: #6c757d;
+  padding: 0.25rem;
+  font-size: 1.1rem;
+  line-height: 1;
+  transition: color 0.2s ease;
 }
 
 .field-actions button:hover {
-  background-color: #e9ecef;
-  border-color: #dee2e6;
-}
-
-.field-actions button.delete {
-  background-color: #fff5f5;
-  color: #dc3545;
-  border-color: #ffebeb;
+  color: var(--primary-color);
 }
 
 .field-actions button.delete:hover {
-  background-color: #dc3545;
-  color: white;
-  border-color: #dc3545;
+  color: #dc3545;
 }
 
-/* 添加字段按钮 */
-.object-configurator > button {
-  margin-top: 15px;
-  padding: 8px 16px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
+.add-field-button {
+  margin-top: 1.5rem;
+  width: 100%;
+  padding: 0.75rem;
+  background-color: rgba(0, 123, 255, 0.1);
+  color: var(--primary-color);
+  border: 1px dashed var(--border-color);
   font-weight: 500;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s ease;
 }
 
-.object-configurator > button:hover {
-  background-color: #0069d9;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+.add-field-button:hover {
+  background-color: rgba(0, 123, 255, 0.2);
+  border-color: var(--primary-color);
 }
 
-.object-configurator > button:active {
-  transform: translateY(0);
-  box-shadow: none;
-}
-
-/* 嵌套容器样式 */
 .nested-container {
-  margin-left: 20px;
-  border-left: 2px solid #007bff;
-  padding-left: 15px;
-  margin-top: 10px;
-  margin-bottom: 10px;
+  margin-top: 1.5rem;
+  padding-left: 1.5rem;
+  border-left: 2px solid var(--border-color);
 }

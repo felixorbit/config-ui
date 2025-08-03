@@ -64,7 +64,8 @@ const FormConfigurator: React.FC<FormConfiguratorProps> = ({ config, onConfigCha
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const configData = params.get('config');
-    if (configData) {
+    // 只有在没有初始配置的情况下才从 URL 中解析配置
+    if (configData && !config) {
       try {
         const decodedConfig = decodeURIComponent(atob(configData));
         const parsedConfig = JSON.parse(decodedConfig);

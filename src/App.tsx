@@ -65,19 +65,19 @@ function App() {
       <main className="main-content">
         <div className="content-wrapper">
           {activeTab === 'config' && (
-            <section className="config-section">
+            <section>
               <FormConfigurator config={formConfig} onConfigChange={handleConfigChange} />
             </section>
           )}
           {activeTab === 'fill' && (
-            <>
-              <section className="filler-section">
+            <div className="filler-and-display-grid">
+              <section>
                 <FormDataFiller config={formConfig} formData={formData} onDataChange={handleDataChange} />
               </section>
-              <section className="display-section">
+              <section>
                 <JsonDisplay data={formData} />
               </section>
-            </>
+            </div>
           )}
         </div>
       </main>
